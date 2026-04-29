@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Парковщик Admin</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <main class="shell admin-shell">
+      <section class="hero compact">
+        <p class="eyebrow">Admin</p>
+        <h1>Ручная модерация MVP</h1>
+        <p class="lead">Панель для проверки пилотных данных по одному району.</p>
+      </section>
+
+      <section class="stats-grid">
+        <article class="stat-card">
+          <span>Пользователи</span>
+          <strong>{{ stats.users }}</strong>
+        </article>
+        <article class="stat-card">
+          <span>Активные места</span>
+          <strong>{{ stats.active_spots }}</strong>
+        </article>
+        <article class="stat-card">
+          <span>Активные подписки</span>
+          <strong>{{ stats.active_subscriptions }}</strong>
+        </article>
+        <article class="stat-card danger">
+          <span>Открытые жалобы</span>
+          <strong>{{ stats.open_reports }}</strong>
+        </article>
+      </section>
+
+      <section class="grid">
+        <article class="card">
+          <h2>Пользователи</h2>
+          {% for user in users %}
+          <div class="row">
+            <strong>{{ user.name }}</strong>
+            <span>{{ user.role }} · {{ user.home_area }}</span>
+          </div>
+          {% endfor %}
+        </article>
+
+        <article class="card">
+          <h2>Свободные места</h2>
+          {% for spot in spots %}
+          <div class="row">
+            <strong>{{ spot.address }}</strong>
+            <span>{{ spot.user_name }} · {{ spot.status }} · confidence {{ spot.confidence }}</span>
+            <form class="inline-form" method="post" action="/admin/spots/{{ spot.id }}/status">
+              <select name="status">
+                <option value="free" {% if spot.status == "free" %}selected{% endif %}>free</option>
+                <option value="occupied" {% if spot.status == "occupied" %}selected{% endif %}>occupied</option>
+                <option value="expired" {% if spot.status == "expired" %}selected{% endif %}>expired</option>
+                <option value="removed" {% if spot.status == "removed" %}selected{% endif %}>removed</option>
+              </select>
+              <button type="submit">Сохранить</button>
+            </form>
+          </div>
+          {% endfor %}
+        </article>
+
+        <article class="card">
+          <h2>Подписки</h2>
+          {% for item in subscriptions %}
+          <div class="row">
+            <strong>{{ item.user_name }}</strong>
+            <span>{{ item.plan }} · {{ item.amount_rub }} ₽ · {{ item.status }}</span>
+          </div>
+          {% endfor %}
+        </article>
+
+        <article class="card">
+          <h2>Жалобы</h2>
+          {% if reports %}
+            {% for report in reports %}
+            <div class="row">
+              <strong>{{ report.spot_address }}</strong>
+              <span>{{ report.reporter_name }} · {{ report.reason }} · {{ report.status }}</span>
+              <form class="report-form" method="post" action="/admin/reports/{{ report.id }}/status">
+                <select name="status">
+                  <option value="open" {% if report.status == "open" %}selected{% endif %}>open</option>
+                  <option value="reviewed" {% if report.status == "reviewed" %}selected{% endif %}>reviewed</option>
+                  <option value="resolved" {% if report.status == "resolved" %}selected{% endif %}>resolved</option>
+                  <option value="rejected" {% if report.status == "rejected" %}selected{% endif %}>rejected</option>
+                </select>
+                <select name="spot_status">
+                  <option value="">Не менять место</option>
+                  <option value="free">Оставить free</option>
+                  <option value="occupied">Поставить occupied</option>
+                  <option value="expired">Поставить expired</option>
+                  <option value="removed">Поставить removed</option>
+                </select>
+                <button type="submit">Применить</button>
+              </form>
+            </div>
+            {% endfor %}
+          {% else %}
+            <div class="row">
+              <strong>Пока нет жалоб</strong>
+              <span>Система чистая</span>
+            </div>
+          {% endif %}
+        </article>
+      </section>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,6 @@
+.DS_Store
+.venv/
+.tmp_pages/
+__pycache__/
+*.py[cod]
+*.db

@@ -1,0 +1,24 @@
+Инструкция по запуску проекта
+
+1. Перейдите в папку проекта:
+cd /Users/pasavoronkov/Documents/f_parking
+
+2. Создайте виртуальное окружение:
+python3 -m venv .venv
+
+3. Активируйте виртуальное окружение:
+source .venv/bin/activate
+
+4. Установите зависимости:
+pip install -r requirements.txt
+
+5. Установите пакет для HTML-форм админки:
+pip install python-multipart
+
+6. Запустите сервер:
+uvicorn mvp_app.main:app --reload
+
+После запуска откройте в браузере:
+- Главная страница: http://127.0.0.1:8000/
+- Админка: http://127.0.0.1:8000/admin
+- Swagger API: http://127.0.0.1:8000/docs
