@@ -1,49 +1,87 @@
-<h2 align="left">Hi 👋! I'm Pavel, building MVP products and backend tools with Python and FastAPI.</h2>
+# F-parking MVP
 
-###
+`F-parking` — сервис для жителей районов с дефицитом парковки. Это MVP, который показывает базовую механику продукта: пользователь отмечает свободное место, другой пользователь получает доступ по подписке, а модератор вручную обрабатывает спорные отметки и жалобы.
 
-<div align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=tokseed&hide_title=false&hide_rank=false&show_icons=true&include_all_commits=true&count_private=true&disable_animations=false&theme=dracula&locale=en&hide_border=false" height="150" alt="tokseed stats graph" />
-  <img src="https://github-readme-stats.vercel.app/api/top-langs?username=tokseed&locale=en&hide_title=false&layout=compact&card_width=320&langs_count=6&theme=dracula&hide_border=false" height="150" alt="tokseed languages graph" />
-</div>
+Стек: `FastAPI` + `SQLite` + `Jinja2`.
 
-###
+## Что уже готово
 
-<img align="right" height="170" src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExdXNwaWIxZmhmNXZ5Mmk0azNxOHF5NWYxcWpsNHA5YXZwNW43M3lhMSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/MO4wPoU4UubIehvZbt/giphy.gif" alt="One Piece GIF" />
+- API для пользователей, парковочных отметок, подписок и жалоб.
+- Простая веб-админка для ручной модерации статусов.
+- Автосоздание демо-данных при первом запуске.
+- Локальная SQLite-база, которая инициализируется автоматически при старте.
 
-###
+## Сценарий MVP
 
-<div align="left">
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" height="30" alt="python logo" />
-  <img width="12" />
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/fastapi/fastapi-original.svg" height="30" alt="fastapi logo" />
-  <img width="12" />
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" height="30" alt="javascript logo" />
-  <img width="12" />
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" height="30" alt="typescript logo" />
-  <img width="12" />
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" height="30" alt="html5 logo" />
-  <img width="12" />
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" height="30" alt="css3 logo" />
-  <img width="12" />
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sqlite/sqlite-original.svg" height="30" alt="sqlite logo" />
-  <img width="12" />
-  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" height="30" alt="git logo" />
-</div>
+1. Пользователь публикует свободное место с адресом, координатами и временем жизни отметки.
+2. Система хранит активные и истёкшие отметки.
+3. Подписка открывает доступ к продуктовой модели монетизации.
+4. Жалобы позволяют вручную модерировать качество данных через админку.
 
-###
+## Структура проекта
 
-<div align="left">
-  <a href="https://github.com/tokseed" target="_blank">
-    <img src="https://img.shields.io/static/v1?message=GitHub&logo=github&label=&color=181717&logoColor=white&labelColor=&style=for-the-badge" height="35" alt="github logo" />
-  </a>
-  <a href="mailto:voronkovpasha634@gmail.com" target="_blank">
-    <img src="https://img.shields.io/static/v1?message=Gmail&logo=gmail&label=&color=D14836&logoColor=white&labelColor=&style=for-the-badge" height="35" alt="gmail logo" />
-  </a>
-</div>
+```text
+f_parking/
+├── mvp_app/
+│   ├── main.py              # FastAPI-приложение и маршруты
+│   ├── db.py                # SQLite-схема и seed-данные
+│   ├── schemas.py           # Pydantic-схемы
+│   ├── templates/           # HTML-шаблоны главной и админки
+│   └── static/styles.css    # UI-стили
+├── requirements.txt
+└── README.md
+```
 
-###
+## Быстрый старт
 
-<br clear="both">
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+uvicorn mvp_app.main:app --reload
+```
 
-<img src="https://raw.githubusercontent.com/tokseed/tokseed/output/snake.svg" alt="Snake animation" />
+После запуска:
+
+- `http://127.0.0.1:8000/` — главная страница
+- `http://127.0.0.1:8000/docs` — Swagger / OpenAPI
+- `http://127.0.0.1:8000/admin` — админка MVP
+
+## API-слои
+
+### Пользователи
+
+- `POST /api/users`
+- `GET /api/users`
+
+### Парковочные места
+
+- `POST /api/spots`
+- `GET /api/spots`
+- `PATCH /api/spots/{spot_id}`
+
+### Подписки
+
+- `POST /api/subscriptions`
+- `GET /api/subscriptions`
+
+### Жалобы
+
+- `POST /api/reports`
+- `GET /api/reports`
+- `PATCH /api/reports/{report_id}`
+
+## Что демонстрирует этот MVP
+
+- гипотезу спроса на быстрый доступ к парковке в одном районе;
+- механику user-generated данных с ограниченным временем жизни;
+- базовую админ-модерацию без сложной панели;
+- монетизационную модель через подписки.
+
+## Следующий этап
+
+- подключить Telegram-бота или мобильный клиент;
+- добавить авторизацию и роли;
+- вынести карту и поиск в отдельный фронтенд;
+- заменить локальную SQLite-базу на production-ready хранилище;
+- интегрировать реальные платежи и аналитику.
